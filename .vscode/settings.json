@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "cmath": "c",
+        "locale": "c",
+        "cstdio": "cpp",
+        "xmemory": "cpp"
+    }
+}
