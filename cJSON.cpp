@@ -147,11 +147,11 @@ CJSON_PUBLIC(void) cJSON_Delete(cJSON *item)
         }
         if (!(item->type & cJSON_IsReference) && (item->valuestring != NULL))
         {
-            delete item->valuestring;
+            delete[] item->valuestring;
         }
         if (!(item->type & cJSON_StringIsConst) && (item->string != NULL))
         {
-            delete item->string;
+            delete[] item->string;
         }
         delete item;
         item = next;
@@ -296,7 +296,7 @@ CJSON_PUBLIC(char*) cJSON_SetValuestring(cJSON *object, const char *valuestring)
     }
     if (object->valuestring != NULL)
     {
-        delete object->valuestring;
+        delete[] object->valuestring;
     }
     object->valuestring = copy;
 
@@ -366,7 +366,7 @@ static unsigned char* ensure(printbuffer * const p, size_t needed)
 
     newbuffer = new unsigned char[newsize];
     memcpy(newbuffer, p->buffer, p->offset + 1);
-    delete p->buffer;  
+    delete[] p->buffer;  
     p->length = newsize;
     p->buffer = newbuffer;
 
@@ -735,7 +735,7 @@ static bool parse_string(cJSON * const item, parse_buffer * const input_buffer)
 fail:
     if (output != NULL)
     {
-        delete output;
+        delete[] output;
     }
 
     if (input_pointer != NULL)
@@ -1061,19 +1061,19 @@ static unsigned char *print(const cJSON * const item, bool format)
 
     printed[buffer->offset] = '\0'; 
 
-    delete buffer->buffer;
+    delete[] buffer->buffer;
 
     return printed;
 
 fail:
     if (buffer->buffer != NULL)
     {
-        delete buffer->buffer;
+        delete[] buffer->buffer;
     }
 
     if (printed != NULL)
     {
-        delete printed;
+        delete[] printed;
     }
 
     return NULL;
@@ -1112,7 +1112,7 @@ CJSON_PUBLIC(char *) cJSON_PrintBuffered(const cJSON *item, int prebuffer, bool 
 
     if (!print_value(item, &p))
     {
-        delete p.buffer;
+        delete[] p.buffer;
         return NULL;
     }
 
@@ -1865,7 +1865,7 @@ static bool add_item_to_object(cJSON * const object, const char * const string, 
 
     if (!(item->type & cJSON_StringIsConst) && (item->string != NULL))
     {
-        delete item->string;
+        delete[] item->string;
     }
 
     item->string = new_key;
@@ -2187,7 +2187,7 @@ static bool replace_item_in_object(cJSON *object, const char *string, cJSON *rep
     /* replace the name in the replacement */
     if (!(replacement->type & cJSON_StringIsConst) && (replacement->string != NULL))
     {
-        delete replacement->string;
+        delete[] replacement->string;
     }
     replacement->string = (char*)cJSON_strdup((const unsigned char*)string);
     replacement->type &= ~cJSON_StringIsConst;
